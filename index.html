@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#100e10">
+  <meta name="description" content="A letter written with honesty, care, and no expectations.">
+  <title>For Sylvia — A Letter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --night: #100e10;
+      --rose: #d9a6a2;
+      --rose-light: #f0c9c4;
+      --ink: #f5ece9;
+      --muted: #b8a9a7;
+      --line: rgba(240, 201, 196, .17);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; min-height: 100vh; color: var(--ink);
+      background:
+        radial-gradient(ellipse at 50% 15%, rgba(120, 66, 79, .22), transparent 48%),
+        radial-gradient(ellipse at 10% 85%, rgba(90, 61, 73, .16), transparent 40%),
+        var(--night);
+      font-family: "DM Sans", sans-serif;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .15;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.17'/%3E%3C/svg%3E");
+      z-index: 5;
+    }
+    .screen {
+      min-height: 100svh; display: grid; place-items: center; padding: 42px 20px;
+      position: relative; overflow: hidden;
+    }
+    .opening { text-align: center; width: min(680px, 100%); }
+    .eyebrow {
+      color: var(--rose); text-transform: uppercase; letter-spacing: .3em;
+      font-size: .68rem; font-weight: 600;
+    }
+    h1, h2, .script { font-family: "Playfair Display", Georgia, serif; font-weight: 400; }
+    h1 { font-size: clamp(4rem, 15vw, 8rem); line-height: .98; margin: 28px 0 22px; letter-spacing: -.045em; }
+    .heart-mark { color: var(--rose); font-size: 1.5rem; margin: 0 0 24px; animation: pulse 2.8s ease-in-out infinite; }
+    .opening-copy { color: var(--muted); max-width: 430px; margin: 0 auto 34px; line-height: 1.9; font-size: .98rem; }
+    .open-btn {
+      appearance: none; border: 1px solid rgba(217,166,162,.72); color: var(--ink);
+      background: rgba(217,166,162,.07); padding: 14px 28px; border-radius: 999px;
+      font: 500 .9rem "DM Sans", sans-serif; letter-spacing: .04em; cursor: pointer;
+      transition: background .25s ease, transform .25s ease, box-shadow .25s ease;
+    }
+    .open-btn:hover { background: rgba(217,166,162,.16); transform: translateY(-2px); box-shadow: 0 10px 36px rgba(217,166,162,.1); }
+    .small-note { color: #887c7b; font-size: .72rem; margin-top: 18px; }
+    .corner { position: absolute; color: rgba(217,166,162,.18); font-family: Georgia,serif; font-size: 7rem; }
+    .corner.one { top: 7%; left: 8%; transform: rotate(-18deg); }
+    .corner.two { right: 8%; bottom: 7%; transform: rotate(15deg); }
+    .letter-screen { display: none; padding-top: 70px; padding-bottom: 70px; }
+    .letter-screen.visible { display: block; animation: reveal 1s ease both; }
+    .letter-wrap { width: min(760px, 100%); margin: 0 auto; }
+    .backline { text-align: center; margin-bottom: 30px; color: var(--rose); font-size: .7rem; letter-spacing: .25em; text-transform: uppercase; }
+    .letter {
+      border: 1px solid var(--line); border-radius: 24px;
+      background: linear-gradient(145deg, rgba(42,33,37,.88), rgba(25,21,24,.9));
+      padding: clamp(27px, 7vw, 66px);
+      box-shadow: 0 30px 100px rgba(0,0,0,.28), inset 0 1px rgba(255,255,255,.025);
+    }
+    .letter-head { text-align: center; border-bottom: 1px solid var(--line); padding-bottom: 28px; margin-bottom: 34px; }
+    .letter-head .eyebrow { letter-spacing: .22em; }
+    h2 { font-size: clamp(2.2rem, 7vw, 3.2rem); margin: 14px 0 0; }
+    .letter p { color: #e8ddda; line-height: 2; font-size: 1rem; margin: 0 0 24px; }
+    .letter p.salutation { font-family: "Playfair Display", Georgia, serif; font-size: 1.45rem; color: var(--rose-light); margin-bottom: 20px; }
+    .letter p.signature { color: var(--rose-light); font-family: "Playfair Display", Georgia, serif; font-size: 1.45rem; margin: 34px 0 0; }
+    .closing { text-align: center; padding: 42px 10px 0; }
+    .closing .script { font-size: clamp(1.5rem, 5vw, 2.1rem); color: var(--rose-light); font-style: italic; }
+    .closing .tiny { color: #8f8180; font-size: .72rem; letter-spacing: .08em; margin-top: 12px; }
+    footer { text-align: center; color: #756b6b; font-size: .7rem; padding: 28px 16px 35px; }
+    .float-heart {
+      position: fixed; bottom: -30px; color: rgba(217,166,162,.28);
+      pointer-events: none; z-index: 1; animation: drift 8s linear forwards;
+    }
+    @keyframes pulse { 0%,100% { transform: scale(1); opacity: .75; } 50% { transform: scale(1.14); opacity: 1; } }
+    @keyframes reveal { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes drift { to { transform: translateY(-110vh) rotate(35deg); opacity: 0; } }
+    @media (max-width: 540px) {
+      .screen { min-height: 92svh; }
+      .letter { border-radius: 17px; }
+      .letter p { font-size: .95rem; line-height: 1.9; }
+      .corner { font-size: 4rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <section class="screen" id="opening">
+    <span class="corner one" aria-hidden="true">♡</span>
+    <span class="corner two" aria-hidden="true">♡</span>
+    <div class="opening">
+      <div class="eyebrow">A few words from the heart</div>
+      <h1>For Sylvia</h1>
+      <div class="heart-mark" aria-hidden="true">♡</div>
+      <p class="opening-copy">There are some things that are easier to write down than to say. I hope you'll take a quiet moment to read this.</p>
+      <button class="open-btn" id="openLetter" type="button">Open my letter <span aria-hidden="true">↗</span></button>
+      <div class="small-note">Take your time. There's no pressure.</div>
+    </div>
+  </section>
+
+  <section class="screen letter-screen" id="letterScreen" aria-hidden="true">
+    <div class="letter-wrap">
+      <div class="backline">Written with honesty · Read at your own pace</div>
+      <article class="letter">
+        <div class="letter-head">
+          <div class="eyebrow">A letter</div>
+          <h2>Dear Sylvia</h2>
+        </div>
+        <p class="salutation">Sylvia,</p>
+        <p>There's something I want you to understand, and I hope you'll take a moment to read it.</p>
+
+        <p>When I told you that I've had feelings for you for about a year, I meant every word. Even when you were in another relationship, my feelings never really went away. I won't pretend I didn't hope that someday things would be different between us. When your previous relationship ended, a part of me hoped that maybe we'd finally get an opportunity to see where things could go.</p>
+
+        <p>I wasn't waiting because I had nothing else to do or because I couldn't find someone else. It's simply that my feelings for you were genuine, and I never really found myself wanting to pursue anyone else. I understand why that might be difficult for you to believe, but that's the truth.</p>
+
+        <p>I've enjoyed getting closer to you, our conversations, the little jokes, the affection and the moments we've shared. I genuinely wanted to build something meaningful with you. You became someone I could picture in my future, someone I hoped to share more than just beautiful moments with.</p>
+
+        <p>And perhaps that's what makes this difficult. I'm not just letting go of what we had; I'm also letting go of the future I quietly imagined we could have had. A part of me will probably always wonder what things might have been like if circumstances and feelings had been different.</p>
+
+        <p>I never wanted things to end this way. I wish love alone could have been enough to bring two people together and keep them there. But I've come to understand that feelings, no matter how genuine, cannot make two people ready for the same thing at the same time.</p>
+
+        <p>I also understand that healing isn't something anyone can rush. I don't want you to feel pressured to love me, choose me or make promises you're not ready to keep. Your feelings matter too, and I respect that.</p>
+
+        <p>At the same time, I have to be honest with myself. I can't comfortably pretend that we're just friends when my feelings are much deeper than that. As much as it hurts, I would rather take a step back and give myself room to move forward than remain close while secretly hoping things will change.</p>
+
+        <p>Please don't feel guilty about any of this. I don't regret loving you, and I don't regret giving us a chance. If anything, I'm grateful for the moments we shared and for the opportunity to get to know you the way I did.</p>
+
+        <p>I never wanted a goodbye with you, Sylvia. But sometimes, caring deeply about someone also means accepting that you cannot force a place in their heart. And sometimes, the hardest thing is walking away from someone you still wish you could stay with.</p>
+
+        <p>If I ever cross your mind, I hope you'll remember that someone genuinely cared about you, believed in the possibility of something beautiful with you, and once wished for nothing more than the chance to build a lifetime together.</p>
+
+        <p>I sincerely wish you healing, peace and happiness. Take good care of yourself, Sylvia.</p>
+        <p class="signature">With care, Ryan. ♡</p>
+      </article>
+      <div class="closing">
+        <div class="script">Some feelings are real, even when the story ends differently.</div>
+        <div class="tiny">MADE WITH HONESTY, AND WITHOUT EXPECTATION</div>
+      </div>
+    </div>
+  </section>
+  <footer>For Sylvia · A personal letter</footer>
+
+  <script>
+    const openButton = document.getElementById("openLetter");
+    const opening = document.getElementById("opening");
+    const letterScreen = document.getElementById("letterScreen");
+
+    openButton.addEventListener("click", () => {
+      opening.style.display = "none";
+      letterScreen.classList.add("visible");
+      letterScreen.setAttribute("aria-hidden", "false");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        for (let i = 0; i < 7; i++) {
+          setTimeout(() => {
+            const heart = document.createElement("span");
+            heart.className = "float-heart";
+            heart.textContent = Math.random() > .5 ? "♡" : "♥";
+            heart.style.left = (8 + Math.random() * 84) + "vw";
+            heart.style.fontSize = (12 + Math.random() * 15) + "px";
+            heart.style.animationDuration = (6 + Math.random() * 4) + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 10500);
+          }, i * 260);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
